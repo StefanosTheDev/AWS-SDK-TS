@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "dist/devServer.js",
+  "scripts": {
+    "dev": "ts-node-dev --inspect=9229 --respawn src/devServer.ts",
+    "debug": "node --inspect-brk -r ts-node/register src/devServer.ts",
+    "start": "ts-node src/devServer.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.3.1",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.4",
+    "prisma": "^6.3.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3"
+  }
+}
