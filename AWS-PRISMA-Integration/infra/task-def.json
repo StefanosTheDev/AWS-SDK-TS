@@ -1,0 +1,36 @@
+{
+  "family": "prisma-task",
+  "networkMode": "awsvpc",
+  "executionRoleArn": "arn:aws:iam::268572651977:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::268572651977:role/ecsTaskExecutionRole",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "containerDefinitions": [
+    {
+      "name": "my-prisma-app",
+      "image": "268572651977.dkr.ecr.us-west-1.amazonaws.com/my-prisma-app:latest",
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 3000
+        }
+      ],
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/prisma-task",
+          "awslogs-region": "us-west-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "environment": [
+        {
+          "name": "DATABASE_URL",
+          "value": "postgresql://my_new_user:mysecret@prisma-db.xxxxxxxxxxx.us-west-1.rds.amazonaws.com:5432/my_new_db"
+        }
+      ]
+    }
+  ]
+}

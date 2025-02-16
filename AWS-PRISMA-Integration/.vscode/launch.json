@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug TypeScript (Dev Mode)",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "--inspect",
+        "-r",
+        "ts-node/register",
+        "-r",
+        "tsconfig-paths/register"
+      ],
+      "args": ["src/devServer.ts"],
+      "cwd": "${workspaceFolder}",
+      "restart": true,
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "outFiles": ["${workspaceFolder}/src/**/*.ts"],
+      "sourceMaps": true
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Process (Running Dev)",
+      "port": 9229,
+      "restart": true,
+      "protocol": "inspector"
+    }
+  ]
+}
