@@ -1,20 +1,26 @@
-#!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { InfraStack } from '../lib/infra-stack';
+import { VpcStack } from '../lib/vpc-stack';
+import { RdsStack } from '../lib/rds-stack';
+import { EcsStack3 } from '../lib/ecs-stack';
 
 const app = new cdk.App();
-new InfraStack(app, 'InfraStack', {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
 
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+// ✅ Deploy VPC
+const vpcStack = new VpcStack(app, 'VpcStack');
 
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  // env: { account: '123456789012', region: 'us-east-1' },
+// ✅ Deploy RDS (PostgreSQL)
+const rdsStack = new RdsStack(
+  app,
+  'RdsStack3',
+  vpcStack.vpc,
+  vpcStack.rdsSecurityGroup
+);
 
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-});
+// ✅ Deploy ECS + Dockerized App
+new EcsStack3(
+  app,
+  'EcsStack3',
+  vpcStack.vpc,
+  rdsStack.dbInstance.dbInstanceEndpointAddress,
+  {} // Empty object for optional StackProps
+);
