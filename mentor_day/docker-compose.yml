@@ -1,0 +1,33 @@
+services:
+  app:
+    image: stefanos26/prisma-app:1.0.2
+    container_name: my_node_app
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: 'postgresql://my_new_user:mysecret@database:5432/my_new_db'
+    entrypoint: ['/bin/sh', '-c']
+    command:
+      - |
+        npx prisma migrate deploy
+        npx ts-node-dev --respawn --transpile-only src/devServer.ts
+
+  database:
+    image: postgres:15
+    container_name: my_postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: my_new_user
+      POSTGRES_PASSWORD: mysecret
+      POSTGRES_DB: my_new_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
